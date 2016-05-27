@@ -2,5 +2,9 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-leaflet-heatmap'
+  name: 'ember-leaflet-heatmap',
+  included: function(app){
+    app.import(app.bowerDirectory + '/heatmap.js-amd/build/heatmap.js');
+  	app.import('/vendor/Leaflet.heatmap/src/heatmap.js');
+  }
 };

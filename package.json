@@ -1,7 +1,7 @@
 {
   "name": "ember-leaflet-heatmap",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.1",
+  "description": "Ember Leaflet Addon to add Heatmap.js support.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +11,11 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/willviles/ember-leaflet-heatmap.git",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Will Viles <will@vil.es>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
@@ -35,17 +35,28 @@
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
+    "ember-leaflet": "^2.1.1",
     "ember-resolver": "^2.0.3",
     "ember-try": "^0.2.2",
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-leaflet",
+    "leaflet",
+    "ember",
+    "maps",
+    "heatmap",
+    "heat",
+    "heatmap.js"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "after": [
+      "ember-leaflet"
+    ]
   }
 }
