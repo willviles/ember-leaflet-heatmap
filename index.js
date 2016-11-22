@@ -4,7 +4,9 @@
 module.exports = {
   name: 'ember-leaflet-heatmap',
   included: function(app){
-    app.import(app.bowerDirectory + '/heatmap.js-amd/build/heatmap.js');
-  	app.import('vendor/leaflet.heatmap.js');
+    if (!process.env.EMBER_CLI_FASTBOOT) {
+      app.import(app.bowerDirectory + '/heatmap.js-amd/build/heatmap.js');
+    	app.import('vendor/leaflet.heatmap.js');
+    }
   }
 };
