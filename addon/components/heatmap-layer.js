@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import BaseLayer from 'ember-leaflet/components/base-layer';
-import ContainerMixin from 'ember-leaflet/mixins/container';
+import { ParentMixin } from 'ember-composability-tools';
 
-export default BaseLayer.extend(ContainerMixin, {
+export default BaseLayer.extend(ParentMixin, {
 
   leafletRequiredOptions: ['data'],
 
