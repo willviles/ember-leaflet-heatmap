@@ -2,6 +2,8 @@ import Ember from 'ember';
 import BaseLayer from 'ember-leaflet/components/base-layer';
 import { ParentMixin } from 'ember-composability-tools';
 
+const { get } = Ember;
+
 export default BaseLayer.extend(ParentMixin, {
 
   leafletRequiredOptions: ['data'],
@@ -16,31 +18,16 @@ export default BaseLayer.extend(ParentMixin, {
 
   didUpdateAttrs({ newAttrs }) {
     if (newAttrs.data) {
-      this.get('_layer').setData(newAttrs.data.value);
+      get(this, '_layer').setData(newAttrs.data.value);
     }
   },
 
 	createLayer(){
-    return new L.HeatmapOverlay(this.get('options'));
+    return new L.HeatmapOverlay(get(this, 'options'));
 	},
 
-  layerSetup() {
-		if (Ember.isNone(this.get('_layer'))) {
-			this._layer = this.createLayer();
-      this._layer.setData(this.get('data'));
-			this._addObservers();
-			this._addEventListeners();
-			this.didCreateLayer();
-		}
-		if (this.get('containerLayer')) {
-			if (!Ember.isNone(this.get('containerLayer')._layer)) {
-				this.get('containerLayer')._layer.addLayer(this._layer);
-			}
-		}
-	},
+  didCreateLayer() {
+    get(this, '_layer').setData(get(this, 'data'));
+  }
 
-	didInsertElement() {
-		this._super(...arguments);
-		this.layerSetup();
-	}
 });
