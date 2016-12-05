@@ -1,4 +1,4 @@
-# Ember-leaflet-heatmap
+# Ember Leaflet Heatmap
 
 Offers [Heatmap.js](https://www.patrick-wied.at/static/heatmapjs/) functionality for [Ember-Leaflet](http://ember-leaflet.com), an Ember Addon for [Leaflet](http://leafletjs.com) interactive maps.
 
@@ -31,6 +31,42 @@ All [Heatmap.js options](https://www.patrick-wied.at/static/heatmapjs/docs.html#
                 blur=0.85}}
 ```
 
+## Contextual Component support
+
+[Ember-Leaflet](http://ember-leaflet.com) now makes use of contextual components in Ember. However, only the built in child components are defined out-of-the-box:
+
+```handlebars
+{{#leaflet-map lat=lat lng=lng zoom=zoom as |layers|}}
+  <!-- layers.heat-map undefined -->
+{{/leaflet-map}}
+```
+
+To use Ember Leaflet Heatmap as a contextual component, extend the base leaflet-map component into a custom component of your own.
+
+```javascript
+// your-map.js
+import LeafletMap from 'ember-leaflet/components/leaflet-map';
+
+export default LeafletMap.extend({
+  // Add options here
+});
+```
+
+Next, override the template with the components you need. For a full list of built-in components, (click here)[https://github.com/miguelcobain/ember-leaflet/blob/master/addon/templates/current/leaflet-map.hbs].
+
+```handlebars
+{{yield (hash
+  heat-map=(component "tile-layer" parentComponent=this)
+)}}
+```
+
+Then, you can use it in your templates like so:
+
+```handlebars
+{{#your-map lat=lat lng=lng zoom=zoom as |layers|}}
+  {{layers.heat-map data=heatmapData}}
+{{/your-map}}
+```
 
 ## Running
 
