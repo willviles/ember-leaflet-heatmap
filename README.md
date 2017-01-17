@@ -4,9 +4,11 @@ Offers [Heatmap.js](https://www.patrick-wied.at/static/heatmapjs/) functionality
 
 ## Installation
 
-* `ember install ember-leaflet-heatmap`
+`ember install ember-leaflet-heatmap`
 
-## Basic setup
+## Usage
+
+### Setup
 
 Add the `{{heatmap-layer}}` within your `{{leaflet-map}}` component and iterate your data points in an each block. Pass lat, lng and value properties to the `{{heatmap-point}}` component, which is available contextually as `{{heatmap.point}}`.
 
@@ -16,15 +18,19 @@ Add the `{{heatmap-layer}}` within your `{{leaflet-map}}` component and iterate 
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
   {{#heatmap-layer options=options as | heatmap | }}
+
     {{#each datapoints as | data |}}
+
       {{heatmap.point lat=data.lat lng=data.lng value=data.value}}
+
     {{/each}}
+
   {{/heatmap-layer}}
 
 {{/leaflet-map}}
 ```
 
-## Options
+### Options
 
 All [Heatmap.js options](https://www.patrick-wied.at/static/heatmapjs/docs.html#h337-create) can be passed into the component, either as individual values or in an options hash. Some examples are below:
 
@@ -34,7 +40,7 @@ All [Heatmap.js options](https://www.patrick-wied.at/static/heatmapjs/docs.html#
                 blur=0.85}}
 ```
 
-## Contextual Component support
+### Contextual Component support
 
 [Ember-Leaflet](http://ember-leaflet.com) now makes use of contextual components in Ember. However, only the built in child components are defined out-of-the-box:
 
@@ -67,11 +73,17 @@ Then, you can use it in your templates like so:
 
 ```handlebars
 {{#your-map lat=lat lng=lng zoom=zoom as |layers|}}
+
   {{layers.heatmap options=options as | heatmap | }}
+
     {{#each datapoints as | data |}}
+
       {{heatmap.point lat=data.lat lng=data.lng value=data.value}}
+
     {{/each}}
+
   {{/layers.heatmap}}
+
 {{/your-map}}
 ```
 
