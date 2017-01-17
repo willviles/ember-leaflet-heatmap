@@ -8,25 +8,28 @@ Offers [Heatmap.js](https://www.patrick-wied.at/static/heatmapjs/) functionality
 
 ## Basic setup
 
-Add the `{{heatmap-layer}}` within your `{{leaflet-map}}` component and pass data to it in the format Heatmap.js expects. View the [example data](https://www.patrick-wied.at/static/heatmapjs/docs.html#heatmap-addData).
+Add the `{{heatmap-layer}}` within your `{{leaflet-map}}` component and iterate your data points in an each block. Pass lat, lng and value properties to the `{{heatmap-point}}` component, which is available contextually as `{{heatmap.point}}`.
 
 ```handlebars
 {{#leaflet-map lat=lat lng=lng zoom=zoom}}
 
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
-  {{heatmap-layer data=heatmapData}}
+  {{#heatmap-layer options=options as | heatmap | }}
+    {{#each datapoints as | data |}}
+      {{heatmap.point lat=data.lat lng=data.lng value=data.value}}
+    {{/each}}
+  {{/heatmap-layer}}
 
 {{/leaflet-map}}
 ```
 
 ## Options
 
-All [Heatmap.js options](https://www.patrick-wied.at/static/heatmapjs/docs.html#h337-create) can be passed into the component. Some examples are below:
+All [Heatmap.js options](https://www.patrick-wied.at/static/heatmapjs/docs.html#h337-create) can be passed into the component, either as individual values or in an options hash. Some examples are below:
 
 ```handlebars
-{{heatmap-layer data=heatmapData
-                backgroundColor="#FFFFFF"
+{{heatmap-layer backgroundColor="#FFFFFF"
                 maxOpacity=0.5
                 blur=0.85}}
 ```
@@ -56,7 +59,7 @@ Next, override the template with the components you need. For a full list of bui
 
 ```handlebars
 {{yield (hash
-  heat-map=(component "tile-layer" parentComponent=this)
+  heatmap=(component "heatmap-layer" parentComponent=this)
 )}}
 ```
 
@@ -64,7 +67,11 @@ Then, you can use it in your templates like so:
 
 ```handlebars
 {{#your-map lat=lat lng=lng zoom=zoom as |layers|}}
-  {{layers.heat-map data=heatmapData}}
+  {{layers.heatmap options=options as | heatmap | }}
+    {{#each datapoints as | data |}}
+      {{heatmap.point lat=data.lat lng=data.lng value=data.value}}
+    {{/each}}
+  {{/layers.heatmap}}
 {{/your-map}}
 ```
 
