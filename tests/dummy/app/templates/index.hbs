@@ -1,0 +1,39 @@
+{{#leaflet-map lat=lat lng=lng zoom=zoom onMoveend=(route-action 'updateCoords')}}
+
+  {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
+
+  {{#heatmap-layer options=heatmapOptions as |heatmap|}}
+
+    {{#if showHeatmap}}
+
+      {{#each markers as | point |}}
+
+        {{heatmap.point lat=point.lat lng=point.lng value=point.value}}
+
+      {{/each}}
+
+    {{/if}}
+
+  {{/heatmap-layer}}
+
+  {{#if showMarkers}}
+
+    {{#each markers as |marker|}}
+      {{marker-layer lat=marker.lat lng=marker.lng}}
+    {{/each}}
+
+  {{/if}}
+
+{{/leaflet-map}}
+
+<div class="toggle-buttons">
+  <button {{action (toggle 'showHeatmap' this)}}>
+    Heatmap {{if showHeatmap 'On' 'Off'}}
+  </button>
+  <button {{action (toggle 'showMarkers' this)}}>
+    Markers {{if showHeatmap 'On' 'Off'}}
+  </button>
+  <button {{action (route-action 'changeData')}}>
+    Change Data
+  </button>
+</div>
