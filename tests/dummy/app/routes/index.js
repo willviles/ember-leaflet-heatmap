@@ -19,15 +19,17 @@ export default Ember.Route.extend({
 
   },
 
+  numMarkers: 500,
+
   markers: computed(function() {
 
     let markers = Ember.A([]);
 
-    for (let i=0; i < 100; i++) {
+    for (let i=0; i < get(this, 'numMarkers'); i++) {
       markers.pushObject({
         lat: faker.address.latitude(),
         lng: faker.address.longitude(),
-        value: faker.random.number({ min: 0, max: 100 }) / 100,
+        risk: faker.random.number({ min: 0, max: 100 }) / 100,
       });
 
     }
@@ -35,19 +37,19 @@ export default Ember.Route.extend({
     markers.pushObjects([{
       lat: 45.52315708200585,
       lng: -122.68260955810545,
-      value: 1
+      risk: 1
     }, {
       lat: 45.521533419593,
       lng: -122.6601219177246,
-      value: 0.5
+      risk: 0.5
     }, {
       lat: 45.51992474488168,
       lng: -122.7011489868164,
-      value: 0.2
+      risk: 0.2
     }, {
       lat: 45.520075090261074,
       lng: -122.70029067993163,
-      value: 0.8
+      risk: 0.8
     }]);
 
     return markers;
@@ -65,7 +67,8 @@ export default Ember.Route.extend({
       '0.5': '#ff934e',
       '.8': '#ff585b',
       '0.95': '#ffffff'
-    }
+    },
+    valueField: "risk"
   },
 
   actions: {
@@ -75,10 +78,20 @@ export default Ember.Route.extend({
         setProperties(marker, {
           lat: faker.address.latitude(),
           lng: faker.address.longitude(),
-          value: faker.random.number({ min: 0, max: 100 }) / 100,
+          risk: faker.random.number({ min: 0, max: 100 }) / 100,
         });
 
       });
+
+    },
+
+    addData() {
+      get(this, 'markers').pushObject({
+        lat: faker.address.latitude(),
+        lng: faker.address.longitude(),
+        risk: faker.random.number({ min: 0, max: 100 }) / 100,
+      });
+
     },
 
     updateCoords(e) {

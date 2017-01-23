@@ -2,19 +2,9 @@
 
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
-  {{#heatmap-layer options=heatmapOptions as |heatmap|}}
-
-    {{#if showHeatmap}}
-
-      {{#each markers as | point |}}
-
-        {{heatmap.point lat=point.lat lng=point.lng value=point.value}}
-
-      {{/each}}
-
-    {{/if}}
-
-  {{/heatmap-layer}}
+  {{#if showHeatmap}}
+    {{heatmap-layer data=markers options=heatmapOptions}}
+  {{/if}}
 
   {{#if showMarkers}}
 
@@ -31,9 +21,12 @@
     Heatmap {{if showHeatmap 'On' 'Off'}}
   </button>
   <button {{action (toggle 'showMarkers' this)}}>
-    Markers {{if showHeatmap 'On' 'Off'}}
+    Markers {{if showMarkers 'On' 'Off'}}
   </button>
   <button {{action (route-action 'changeData')}}>
     Change Data
+  </button>
+  <button {{action (route-action 'addData')}}>
+    Add Data
   </button>
 </div>
