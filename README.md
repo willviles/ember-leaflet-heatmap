@@ -10,24 +10,22 @@ Offers [Heatmap.js](https://www.patrick-wied.at/static/heatmapjs/) functionality
 
 ### Setup
 
-Add the `{{heatmap-layer}}` within your `{{leaflet-map}}` component and iterate your data points in an each block. Pass lat, lng and value properties to the `{{heatmap-point}}` component, which is available contextually as `{{heatmap.point}}`.
+To setup the heatmap, simply add the `heatmap-layer` component and pass in an Ember Array of data. By default, Ember Leaflet Heatmap will grab `lat`, `lng` and `value` properties from each item in your array. It will listen to all array changes and automatically update the heatmap.
 
 ```handlebars
 {{#leaflet-map lat=lat lng=lng zoom=zoom}}
 
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
-  {{#heatmap-layer options=options as | heatmap | }}
-
-    {{#each datapoints as | data |}}
-
-      {{heatmap.point lat=data.lat lng=data.lng value=data.value}}
-
-    {{/each}}
-
-  {{/heatmap-layer}}
+  {{heatmap-layer data=data options=options}}
 
 {{/leaflet-map}}
+```
+
+If your data doesn't have `lat`, `lng` or `value` keys, you can set the correct property key references like so:
+
+```handlebars
+{{heatmap-layer data=data latField="latitude" lngField="longitude" valueField="risk"}}
 ```
 
 ### Options
@@ -35,7 +33,8 @@ Add the `{{heatmap-layer}}` within your `{{leaflet-map}}` component and iterate 
 All [Heatmap.js options](https://www.patrick-wied.at/static/heatmapjs/docs.html#h337-create) can be passed into the component, either as individual values or in an options hash. Some examples are below:
 
 ```handlebars
-{{heatmap-layer backgroundColor="#FFFFFF"
+{{heatmap-layer data=data
+                backgroundColor="#FFFFFF"
                 maxOpacity=0.5
                 blur=0.85}}
 ```
@@ -74,15 +73,7 @@ Then, you can use it in your templates like so:
 ```handlebars
 {{#your-map lat=lat lng=lng zoom=zoom as |layers|}}
 
-  {{layers.heatmap options=options as | heatmap | }}
-
-    {{#each datapoints as | data |}}
-
-      {{heatmap.point lat=data.lat lng=data.lng value=data.value}}
-
-    {{/each}}
-
-  {{/layers.heatmap}}
+  {{layers.heatmap data=data options=options}}
 
 {{/your-map}}
 ```
