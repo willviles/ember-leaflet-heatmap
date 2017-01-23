@@ -12,7 +12,7 @@ import h337 from 'heatmap.js';
 * and the Beerware (http://en.wikipedia.org/wiki/Beerware) license.
 */
 
-const { get, isArray, isEmpty, merge } = Ember;
+const { get, isEmpty } = Ember;
 
 if (typeof L.Layer === 'undefined') { L.Layer = L.Class; }
 
@@ -31,14 +31,11 @@ export default L.Layer.extend({
     const size = map.getSize();
 
     this._map = map;
-
     this._width = size.x;
     this._height = size.y;
-
     this._el.style.width = size.x + 'px';
     this._el.style.height = size.y + 'px';
     this._el.style.position = 'absolute';
-
     this._origin = this._map.layerPointToLatLng(new L.Point(0, 0));
 
     map.getPanes().overlayPane.appendChild(this._el);
@@ -86,15 +83,14 @@ export default L.Layer.extend({
 
   _update() {
 
-    let bounds = this._map.getBounds(),
+    let data = { max: this._max, min: this._min, data: [] },
+        bounds = this._map.getBounds(),
         zoom = this._map.getZoom(),
         scale = Math.pow(2, zoom);
 
-    let generatedData = { max: this._max, min: this._min, data: [] };
-
     if (isEmpty(this._data)) {
       if (!this._heatmap) { return; }
-      this._heatmap.setData(generatedData);
+      this._heatmap.setData(data);
       return;
     }
 
@@ -104,9 +100,9 @@ export default L.Layer.extend({
         radiusMultiplier = get(this.cfg, 'scaleRadius') ? scale : 1,
         localMax = 0, localMin = 0;
 
-    this._data.forEach((data) => {
-      const value = get(data, valueField);
-      const latlng = get(data, 'latlng');
+    this._data.data.forEach((datapoint) => {
+      const value = get(datapoint, valueField);
+      const latlng = get(datapoint, 'latlng');
 
       // we don't wanna render points that are not even on the map ;-)
       if (!bounds.contains(latlng)) { return; }
@@ -128,110 +124,50 @@ export default L.Layer.extend({
     });
 
     if (this.cfg.useLocalExtrema) {
-      generatedData.max = localMax;
-      generatedData.min = localMin;
+      data.max = localMax;
+      data.min = localMin;
     }
 
-    generatedData.data = latLngPoints;
+    data.data = latLngPoints;
 
-    this._heatmap.setData(generatedData);
+    this._heatmap.setData(data);
 
   },
 
-  setData(data) {
-    this._max = data.max || this._max;
-    this._min = data.min || this._min;
-    var latField = this.cfg.latField || 'lat';
-    var lngField = this.cfg.lngField || 'lng';
-    var valueField = this.cfg.valueField || 'value';
-
-    // transform data to latlngs
-    data = data.data;
-    var len = data.length;
-    var d = Ember.A([]);
-
-    while (len--) {
-      var entry = data[len];
-      var latlng = new L.LatLng(entry[latField], entry[lngField]);
-      var dataObj = { latlng: latlng };
-      dataObj[valueField] = entry[valueField];
-      if (entry.radius) {
-        dataObj.radius = entry.radius;
-      }
-      d.pushObject(dataObj);
-    }
-
-    this._data = d;
-
-    this._draw();
-
-  },
-
-  addData(data) {
-
-    if (isArray(data)) {
-      data.forEach((d) => { this.addData(d); });
-      return;
-    }
-
+  updateData(data) {
     const latField = this.cfg.getWithDefault('latField', 'lat');
     const lngField = this.cfg.getWithDefault('lngField', 'lng');
     const valueField = this.cfg.getWithDefault('valueField', 'value');
 
-    const lat = get(data, latField);
-    const lng = get(data, lngField);
-    const value = get(data, valueField);
+    let max = this._max, min = this._min;
 
-    this._max = Math.max(this._max, value);
-    this._min = Math.min(this._min, value);
+    let mappedData = data.map((point) => {
 
-    this._data.pushObject({
-      latlng: new L.LatLng(lat, lng),
-      [valueField]: value,
-      radius: data.radius ? get(data, 'radius') : null,
-      stamp: data.stamp
+      const lat = get(point, latField);
+      const lng = get(point, lngField);
+      const value = get(point, valueField);
+
+      max = Math.max(max, value);
+      min = Math.min(min, value);
+
+      return {
+        latlng: new L.LatLng(lat, lng),
+        [valueField]: value
+      };
+
     });
 
-    this._draw();
+    this._max = max || this._max;
+    this._min = min || this._min;
 
-  },
-
-  removeData(data) {
-    let dataToRemove = this._data.findBy('stamp', data.stamp);
-
-    if (!dataToRemove) { return; }
-
-    this._data.removeObject(dataToRemove);
+    this._data = {
+      max,
+      min,
+      data: mappedData
+    };
 
     this._draw();
-  },
 
-  changeData(data) {
-    let dataToChange = this._data.findBy('stamp', data.stamp);
-
-    if (!dataToChange) { return; }
-
-    this._data.removeObject(dataToChange);
-
-    this.addData(merge(dataToChange, data));
-
-  },
-
-  // This function is added for adding Heatmap marker layers
-
-  addLayer(layer) {
-    layer._heatmap = this;
-    this.addData(layer._data);
-
-  },
-
-  removeLayer(layer) {
-    this.removeData(layer._data);
-
-  },
-
-  updateLayer(layer) {
-    this.changeData(layer._data);
   },
 
   _reset() {
