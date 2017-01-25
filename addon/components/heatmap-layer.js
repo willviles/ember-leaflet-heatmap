@@ -10,7 +10,7 @@ let willUpdateData;
 export default BaseLayer.extend(ParentMixin, {
 
 	leafletOptions: [
-	  'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField'
+	  'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
 	],
 
 	createLayer(){

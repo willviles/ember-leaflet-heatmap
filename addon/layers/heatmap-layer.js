@@ -22,8 +22,8 @@ export default L.Layer.extend({
     this.cfg = Ember.Object.create(config);
     this._el = L.DomUtil.create('div', 'leaflet-zoom-hide');
     this._data = Ember.A([]);
-    this._max = 1;
-    this._min = 0;
+    this._max = get(config, 'maxValue') || 1;
+    this._min = get(config, 'minValue') || 0;
     this.cfg.container = this._el;
   },
 

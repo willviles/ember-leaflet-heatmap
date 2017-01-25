@@ -62,13 +62,15 @@ export default Ember.Route.extend({
     blur: 1,
     maxOpacity: 1,
     minOpacity: 0,
+    // maxValue: 2,
+    // minValue: 1,
+    valueField: 'risk',
     gradient: {
       '0': '#ffcf4e',
       '0.5': '#ff934e',
       '.8': '#ff585b',
       '0.95': '#ffffff'
-    },
-    valueField: "risk"
+    }
   },
 
   actions: {
