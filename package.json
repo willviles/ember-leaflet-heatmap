@@ -1,6 +1,6 @@
 {
   "name": "ember-leaflet-heatmap",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Ember Leaflet Addon to add Heatmap.js support.",
   "directories": {
     "doc": "doc",
