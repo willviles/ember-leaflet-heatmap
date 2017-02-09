@@ -1,13 +1,12 @@
 import Ember from 'ember';
 import HeatmapLayer from '../layers/heatmap-layer';
 import BaseLayer from 'ember-leaflet/components/base-layer';
-import { ParentMixin } from 'ember-composability-tools';
 
 const { get, run } = Ember;
 
 let willUpdateData;
 
-export default BaseLayer.extend(ParentMixin, {
+export default BaseLayer.extend({
 
 	leafletOptions: [
 	  'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
