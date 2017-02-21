@@ -1,4 +1,5 @@
-# Ember Leaflet Heatmap
+Ember Leaflet Heatmap [![npm](https://img.shields.io/npm/v/ember-leaflet-heatmap.svg)](https://www.npmjs.com/package/ember-leaflet-heatmap)
+======
 
 Offers [Heatmap.js](https://www.patrick-wied.at/static/heatmapjs/) functionality for [Ember-Leaflet](http://ember-leaflet.com), an Ember Addon for [Leaflet](http://leafletjs.com) interactive maps.
 
