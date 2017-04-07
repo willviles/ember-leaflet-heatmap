@@ -3,18 +3,23 @@ import Ember from 'ember';
 import h337 from 'heatmap.js';
 
 /*
-* Leaflet Heatmap Overlay (Modified)
-*
-* Modification of the following plugin by Will Viles, 2016.
-*
-* Copyright (c) 2014, Patrick Wied (http://www.patrick-wied.at)
-* Dual-licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
-* and the Beerware (http://en.wikipedia.org/wiki/Beerware) license.
-*/
+ * Leaflet Heatmap Overlay (Modified)
+ *
+ * Modification of the following plugin by Will Viles, 2016.
+ *
+ * Copyright (c) 2014, Patrick Wied (http://www.patrick-wied.at)
+ * Dual-licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * and the Beerware (http://en.wikipedia.org/wiki/Beerware) license.
+ */
 
-const { get, isEmpty } = Ember;
+const {
+  get,
+  isEmpty
+} = Ember;
 
-if (typeof L.Layer === 'undefined') { L.Layer = L.Class; }
+if (typeof L.Layer === 'undefined') {
+  L.Layer = L.Class;
+}
 
 export default L.Layer.extend({
 
@@ -68,7 +73,9 @@ export default L.Layer.extend({
   },
 
   _draw() {
-    if (!this._map) { return; }
+    if (!this._map) {
+      return;
+    }
 
     const mapPane = this._map.getPanes().mapPane;
     const point = mapPane._leaflet_pos;
@@ -83,13 +90,19 @@ export default L.Layer.extend({
 
   _update() {
 
-    let data = { max: this._max, min: this._min, data: [] },
-        bounds = this._map.getBounds(),
-        zoom = this._map.getZoom(),
-        scale = Math.pow(2, zoom);
+    let data = {
+        max: this._max,
+        min: this._min,
+        data: []
+      },
+      bounds = this._map.getBounds(),
+      zoom = this._map.getZoom(),
+      scale = Math.pow(2, zoom);
 
     if (isEmpty(this._data)) {
-      if (!this._heatmap) { return; }
+      if (!this._heatmap) {
+        return;
+      }
       this._heatmap.setData(data);
       return;
     }
@@ -97,27 +110,30 @@ export default L.Layer.extend({
     const valueField = this.cfg.getWithDefault('valueField', 'value');
 
     let latLngPoints = [],
-        radiusMultiplier = get(this.cfg, 'scaleRadius') ? scale : 1,
-        localMax = 0, localMin = 0;
+      radiusMultiplier = get(this.cfg, 'scaleRadius') ? scale : 1,
+      localMax = 0,
+      localMin = 0;
 
     this._data.data.forEach((datapoint) => {
       const value = get(datapoint, valueField);
       const latlng = get(datapoint, 'latlng');
 
       // we don't wanna render points that are not even on the map ;-)
-      if (!bounds.contains(latlng)) { return; }
+      if (!bounds.contains(latlng)) {
+        return;
+      }
 
       // local max is the maximum within current bounds
       localMax = Math.max(value, localMax);
       localMin = Math.min(value, localMin);
 
       let point = this._map.latLngToContainerPoint(latlng),
-          latlngPoint = {
-            x: Math.round(point.x),
-            y: Math.round(point.y),
-            [valueField]: value,
-            radius: data.radius ? data.radius * radiusMultiplier : (this.cfg.radius || 2) * radiusMultiplier
-          };
+        latlngPoint = {
+          x: Math.round(point.x),
+          y: Math.round(point.y),
+          [valueField]: value,
+          radius: data.radius ? data.radius * radiusMultiplier : (this.cfg.radius || 2) * radiusMultiplier
+        };
 
       latLngPoints.push(latlngPoint);
 
@@ -139,7 +155,8 @@ export default L.Layer.extend({
     const lngField = this.cfg.getWithDefault('lngField', 'lng');
     const valueField = this.cfg.getWithDefault('valueField', 'value');
 
-    let max = this._max, min = this._min;
+    let max = this._max,
+      min = this._min;
 
     let mappedData = data.map((point) => {
 
@@ -178,7 +195,7 @@ export default L.Layer.extend({
 
     var size = this._map.getSize();
     if (this._width !== size.x || this._height !== size.y) {
-      this._width  = size.x;
+      this._width = size.x;
       this._height = size.y;
 
       this._el.style.width = this._width + 'px';
@@ -192,11 +209,11 @@ export default L.Layer.extend({
   _cssTransform() {
     var div = document.createElement('div');
     var props = [
-    'transform',
-    'WebkitTransform',
-    'MozTransform',
-    'OTransform',
-    'msTransform'
+      'transform',
+      'WebkitTransform',
+      'MozTransform',
+      'OTransform',
+      'msTransform'
     ];
 
     for (var i = 0; i < props.length; i++) {

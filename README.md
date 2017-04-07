@@ -61,7 +61,7 @@ export default LeafletMap.extend({
 });
 ```
 
-Next, override the template with the components you need. For a full list of built-in components, (click here)[https://github.com/miguelcobain/ember-leaflet/blob/master/addon/templates/current/leaflet-map.hbs].
+Next, override the template with the components you need. For a full list of built-in components, [click here](https://github.com/miguelcobain/ember-leaflet/blob/master/addon/templates/current/leaflet-map.hbs).
 
 ```handlebars
 {{yield (hash
