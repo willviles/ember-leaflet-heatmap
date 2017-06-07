@@ -8,11 +8,11 @@ let willUpdateData;
 
 export default BaseLayer.extend({
 
-	leafletOptions: [
-	  'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
-	],
+  leafletOptions: [
+    'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
+  ],
 
-	createLayer(){
+  createLayer(){
     return new HeatmapLayer(get(this, 'options'));
 
 	},
