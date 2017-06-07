@@ -117,9 +117,13 @@ export default L.Layer.extend({
     this._data.data.forEach((datapoint) => {
       const value = get(datapoint, valueField);
       const latlng = get(datapoint, 'latlng');
+      const radius = data.radius ? data.radius * radiusMultiplier : (this.cfg.radius || 2) * radiusMultiplier;
+
+      const mapSize = this._map.getSize();
+      const mapPadding = radius / Math.min(mapSize.x, mapSize.y);
 
       // we don't wanna render points that are not even on the map ;-)
-      if (!bounds.contains(latlng)) {
+      if (!bounds.pad(mapPadding).contains(latlng)) {
         return;
       }
 
@@ -132,7 +136,7 @@ export default L.Layer.extend({
           x: Math.round(point.x),
           y: Math.round(point.y),
           [valueField]: value,
-          radius: data.radius ? data.radius * radiusMultiplier : (this.cfg.radius || 2) * radiusMultiplier
+          radius: radius
         };
 
       latLngPoints.push(latlngPoint);
