@@ -13,7 +13,11 @@
     "heatmap.js"
   ],
   "license": "MIT",
-  "author": "Will Viles <will@vil.es>",
+  "author": {
+    "name": "Will Viles",
+    "email": "will@vil.es",
+    "url": "https://willviles.com"
+  },
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -24,48 +28,49 @@
   },
   "scripts": {
     "build": "ember build",
-    "start": "ember server",
+    "start": "ember serve",
     "test": "ember try:each"
   },
   "dependencies": {
     "broccoli-funnel": "^1.1.0",
     "broccoli-merge-trees": "^1.2.1",
-    "ember-cli-babel": "^5.1.7",
+    "ember-cli-babel": "^6.6.0",
     "ember-cli-version-checker": "^1.2.0",
     "ember-composability-tools": "0.0.7",
     "heatmap.js": "^2.0.5"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
-    "ember-ajax": "2.4.1",
-    "ember-cli": "2.12.0",
+    "ember-ajax": "^3.0.0",
+    "ember-cli": "~2.17.1",
     "ember-cli-app-version": "^2.0.0",
-    "ember-cli-dependency-checker": "^1.3.0",
-    "ember-cli-eslint": "^3.0.0",
-    "ember-cli-htmlbars": "^1.1.1",
-    "ember-cli-htmlbars-inline-precompile": "^0.3.6",
+    "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-eslint": "^4.2.1",
+    "ember-cli-htmlbars": "^2.0.1",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-qunit": "^3.1.0",
+    "ember-cli-qunit": "^4.1.1",
     "ember-cli-release": "^0.2.9",
-    "ember-cli-shims": "^1.0.2",
+    "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^1.1.0",
-    "ember-cli-uglify": "^1.2.0",
+    "ember-cli-uglify": "^2.0.0",
     "ember-composable-helpers": "1.1.3",
     "ember-data": "^2.10.0",
-    "ember-disable-prototype-extensions": "^1.1.0",
-    "ember-export-application-global": "^1.0.5",
-    "ember-faker": "1.1.1",
+    "ember-disable-prototype-extensions": "^1.1.2",
+    "ember-export-application-global": "^2.0.0",
+    "ember-faker": "^1.2.1",
     "ember-leaflet": "^3.0.11",
-    "ember-load-initializers": "^0.6.0",
-    "ember-resolver": "^2.0.3",
+    "ember-load-initializers": "^1.0.0",
+    "ember-resolver": "^4.0.0",
     "ember-route-action-helper": "2.0.1",
-    "ember-source": "~2.12.0",
+    "ember-source": "~2.17.0",
+    "ember-try": "0.2.22",
     "leaflet": "^1.0.3",
     "loader.js": "^4.2.3"
   },
   "engines": {
-    "node": ">= 4"
+    "node": "^4.5 || 6.* || >= 7.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
