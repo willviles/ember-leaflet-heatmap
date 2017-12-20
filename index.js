@@ -1,59 +1,49 @@
 /* eslint-env node */
 'use strict';
 
-var Funnel = require('broccoli-funnel');
-var mergeTrees = require('broccoli-merge-trees');
-var VersionChecker = require('ember-cli-version-checker');
-var path = require('path');
+const BroccoliDebug = require('broccoli-debug');
+const Funnel = require('broccoli-funnel');
+const mergeTrees = require('broccoli-merge-trees');
+const path = require('path');
+const fastbootTransform = require('fastboot-transform');
 
 module.exports = {
   name: 'ember-leaflet-heatmap',
 
   included(app) {
-    if (!isFastBoot()) {
-      this.importBrowserDependencies(app);
-    }
+
+    app.import(this.treePaths.vendor + '/heatmap.js/heatmap.js');
+
+    app.import('vendor/shims/heatmap.js', {
+      exports: {
+        ['heatmap.js']: ['default']
+      }
+    });
 
     return this._super.included.apply(this, arguments);
   },
 
-  importBrowserDependencies(app) {
-    if (arguments.length < 1) {
-      throw new Error('Application instance must be passed to import');
-    }
-
-    // `using: []` syntax isavailable for Ember 2.9.0 and above only
-    new VersionChecker(this).for('ember-cli', 'npm').assertAbove('2.9.0');
-
-
-
-    app.import(this.treePaths.vendor + '/heatmap.js/heatmap.js', {
-      using: [
-        { transformation: 'amd', as: 'heatmap.js' }
-      ]
-    });
-
-  },
-
   treeForVendor(vendorTree) {
-    if (isFastBoot()) {
-      return vendorTree;
-    } else {
-      return this.treeForBrowserVendor(vendorTree);
-    }
-  },
-
-  treeForBrowserVendor(vendorTree) {
-    var trees = [];
+    let debugTree = BroccoliDebug.buildDebugCallback(this.name),
+        trees = [];
 
     if (vendorTree) {
-      trees.push(vendorTree);
+      trees.push(
+        debugTree(vendorTree, 'vendorTree')
+      );
     }
 
-    trees.push(moduleToFunnel('heatmap.js'));
+    let js = fastbootTransform(
+      moduleToFunnel('heatmap.js')
+    );
+
+    trees.push(
+      debugTree(js, 'js')
+    );
 
     return mergeTrees(trees);
   }
+
 };
 
 function moduleToFunnel(moduleName) {
@@ -65,11 +55,4 @@ function moduleToFunnel(moduleName) {
 
 function resolveModulePath(moduleName) {
   return path.dirname(require.resolve(moduleName));
-}
-
-// Checks to see whether this build is targeting FastBoot. Note that we cannot
-// check this at boot time--the environment variable is only set once the build
-// has started, which happens after this file is evaluated.
-function isFastBoot() {
-  return process.env.EMBER_CLI_FASTBOOT === 'true';
 }

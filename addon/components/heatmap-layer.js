@@ -1,12 +1,11 @@
-import Ember from 'ember';
+import EmberLeafletBaseLayer from 'ember-leaflet/components/base-layer';
 import HeatmapLayer from '../layers/heatmap-layer';
-import BaseLayer from 'ember-leaflet/components/base-layer';
 
-const { get, run } = Ember;
+import { A } from '@ember/array';
+import { get } from '@ember/object';
+import { next } from '@ember/runloop';
 
-let willUpdateData;
-
-export default BaseLayer.extend({
+export default EmberLeafletBaseLayer.extend({
 
   leafletOptions: [
     'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
@@ -25,7 +24,7 @@ export default BaseLayer.extend({
   },
 
   setDataObservers() {
-    Ember.A(['lat', 'lng', 'value']).forEach((property) => {
+    A(['lat', 'lng', 'value']).forEach((property) => {
       property = this.getWithDefault(`${property}Field`, property);
       this.addObserver(`data.@each.${property}`, this.dataPropertyChange);
     });
@@ -37,13 +36,9 @@ export default BaseLayer.extend({
   dataPropertyChange() { this._updateData(); },
 
   _updateData() {
-
-    run.cancel(willUpdateData);
-
-    willUpdateData = run.later(this, () => {
-      get(this, '_layer').updateData(get(this, 'data'));
-    }, 250);
-
+    next(() => {
+      get(this, '_layer').updateData(get(this, 'data'))
+    });
   }
 
 });

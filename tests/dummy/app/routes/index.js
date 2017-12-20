@@ -1,9 +1,13 @@
-import Ember from 'ember';
+import Route from '@ember/routing/route';
+
+import { A } from '@ember/array';
+import { debug } from "@ember/debug"
+import { computed, get, setProperties } from '@ember/object';
+import { next } from '@ember/runloop';
+
 import faker from 'faker';
 
-const { computed, get, setProperties } = Ember;
-
-export default Ember.Route.extend({
+export default Route.extend({
 
   setupController(controller/*, model*/) {
 
@@ -23,7 +27,7 @@ export default Ember.Route.extend({
 
   markers: computed(function() {
 
-    let markers = Ember.A([]);
+    let markers = A([]);
 
     for (let i=0; i < get(this, 'numMarkers'); i++) {
       markers.pushObject({
@@ -100,14 +104,14 @@ export default Ember.Route.extend({
       const center = e.target.getCenter();
       const controller = get(this, 'controller');
 
-      Ember.run.next(() => {
+      next(() => {
         setProperties(controller, {
           lat: center.lat,
           lng: center.lng,
           zoom: e.target._zoom
         });
 
-        Ember.debug(`Lat: ${center.lat} Lng: ${center.lng}`);
+        debug(`Lat: ${center.lat} Lng: ${center.lng}`);
 
       });
 
