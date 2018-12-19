@@ -2,21 +2,17 @@ import EmberLeafletBaseLayer from 'ember-leaflet/components/base-layer';
 import HeatmapLayer from '../layers/heatmap-layer';
 
 import { A } from '@ember/array';
-import { get, set } from '@ember/object';
+import { get } from '@ember/object';
 import { next } from '@ember/runloop';
 
 export default EmberLeafletBaseLayer.extend({
 
-  init() {
-    this._super(...arguments);
-    set(this, 'leafletOptions', [
+  leafletOptions: Object.freeze([
       'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
-    ]);
-  },
+  ]),
 
   createLayer(){
     return new HeatmapLayer(get(this, 'options'));
-
 	},
 
   didCreateLayer() {
