@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 
 import { A } from '@ember/array';
 import { debug } from "@ember/debug"
-import { computed, get, setProperties } from '@ember/object';
+import { computed, get, set, setProperties } from '@ember/object';
 import { next } from '@ember/runloop';
 
 import faker from 'faker';
@@ -59,22 +59,25 @@ export default Route.extend({
     return markers;
   }),
 
-  heatmapOptions: {
-    // scaleRadius: true,
-    radius: 100,
-    // useLocalExtrema: true,
-    blur: 1,
-    maxOpacity: 1,
-    minOpacity: 0,
-    // maxValue: 2,
-    // minValue: 1,
-    valueField: 'risk',
-    gradient: {
-      '0': '#ffcf4e',
-      '0.5': '#ff934e',
-      '.8': '#ff585b',
-      '0.95': '#ffffff'
-    }
+  init() {
+    this._super(...arguments);
+    set(this, 'heatmapOptions', {
+      // scaleRadius: true,
+      radius: 100,
+      // useLocalExtrema: true,
+      blur: 1,
+      maxOpacity: 1,
+      minOpacity: 0,
+      // maxValue: 2,
+      // minValue: 1,
+      valueField: 'risk',
+      gradient: {
+        '0': '#ffcf4e',
+        '0.5': '#ff934e',
+        '.8': '#ff585b',
+        '0.95': '#ffffff'
+      }
+    });
   },
 
   actions: {

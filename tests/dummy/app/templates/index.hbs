@@ -1,4 +1,9 @@
-{{#leaflet-map lat=lat lng=lng zoom=zoom onMoveend=(route-action 'updateCoords')}}
+{{#leaflet-map
+  lat=lat
+  lng=lng
+  zoom=zoom
+  onMoveend=(route-action "updateCoords")
+}}
 
   {{tile-layer url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
@@ -17,16 +22,16 @@
 {{/leaflet-map}}
 
 <div class="toggle-buttons">
-  <button {{action (toggle 'showHeatmap' this)}}>
-    Heatmap {{if showHeatmap 'On' 'Off'}}
+  <button {{action (toggle "showHeatmap" this)}}>
+    Heatmap {{if showHeatmap "On" "Off"}}
   </button>
-  <button {{action (toggle 'showMarkers' this)}}>
-    Markers {{if showMarkers 'On' 'Off'}}
+  <button {{action (toggle "showMarkers" this)}}>
+    Markers {{if showMarkers "On" "Off"}}
   </button>
-  <button {{action (route-action 'changeData')}}>
+  <button {{action (route-action "changeData")}}>
     Change Data
   </button>
-  <button {{action (route-action 'addData')}}>
+  <button {{action (route-action "addData")}}>
     Add Data
   </button>
 </div>
