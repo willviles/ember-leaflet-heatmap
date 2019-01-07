@@ -9,6 +9,24 @@ import faker from 'faker';
 
 export default Route.extend({
 
+  heatmapOptions: Object.freeze({
+    // scaleRadius: true,
+    radius: 100,
+    // useLocalExtrema: true,
+    blur: 1,
+    maxOpacity: 1,
+    minOpacity: 0,
+    // maxValue: 2,
+    // minValue: 1,
+    valueField: 'risk',
+    gradient: {
+      '0': '#ffcf4e',
+      '0.5': '#ff934e',
+      '.8': '#ff585b',
+      '0.95': '#ffffff'
+    }
+  }),
+
   setupController(controller/*, model*/) {
 
     setProperties(controller, {
@@ -58,24 +76,6 @@ export default Route.extend({
 
     return markers;
   }),
-
-  heatmapOptions: {
-    // scaleRadius: true,
-    radius: 100,
-    // useLocalExtrema: true,
-    blur: 1,
-    maxOpacity: 1,
-    minOpacity: 0,
-    // maxValue: 2,
-    // minValue: 1,
-    valueField: 'risk',
-    gradient: {
-      '0': '#ffcf4e',
-      '0.5': '#ff934e',
-      '.8': '#ff585b',
-      '0.95': '#ffffff'
-    }
-  },
 
   actions: {
 

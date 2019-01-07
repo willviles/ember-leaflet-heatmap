@@ -7,13 +7,12 @@ import { next } from '@ember/runloop';
 
 export default EmberLeafletBaseLayer.extend({
 
-  leafletOptions: [
-    'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
-  ],
+  leafletOptions: Object.freeze([
+      'backgroundColor', 'blur', 'gradient', 'latField', 'lngField', 'maxOpacity', 'minOpacity', 'radius', 'scaleRadius', 'useLocalExtrema', 'valueField', 'maxValue', 'minValue'
+  ]),
 
   createLayer(){
     return new HeatmapLayer(get(this, 'options'));
-
 	},
 
   didCreateLayer() {
