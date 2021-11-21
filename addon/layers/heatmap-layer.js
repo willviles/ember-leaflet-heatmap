@@ -110,7 +110,7 @@ if (typeof FastBoot === 'undefined') {
         return;
       }
 
-      const valueField = this.cfg.getWithDefault('valueField', 'value');
+      const valueField = this.cfg.get('valueField') ?? 'value';
 
       let latLngPoints = [],
         radiusMultiplier = get(this.cfg, 'scaleRadius') ? scale : 1,
@@ -158,9 +158,9 @@ if (typeof FastBoot === 'undefined') {
     },
 
     updateData(data) {
-      const latField = this.cfg.getWithDefault('latField', 'lat');
-      const lngField = this.cfg.getWithDefault('lngField', 'lng');
-      const valueField = this.cfg.getWithDefault('valueField', 'value');
+      const latField = this.cfg.get('latField') ?? 'lat';
+      const lngField = this.cfg.get('lngField') ?? 'lng';
+      const valueField = this.cfg.get('valueField') ?? 'value';
 
       let max = this._max,
         min = this._min;
