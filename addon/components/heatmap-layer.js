@@ -24,7 +24,7 @@ export default EmberLeafletBaseLayer.extend({
 
   setDataObservers() {
     A(['lat', 'lng', 'value']).forEach((property) => {
-      property = this.getWithDefault(`${property}Field`, property);
+      property = this.get(`${property}Field`) ?? property;
       this.addObserver(`data.@each.${property}`, this.dataPropertyChange);
     });
 
